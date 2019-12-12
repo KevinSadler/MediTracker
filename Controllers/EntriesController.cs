@@ -46,7 +46,10 @@ namespace MediTracker.Controllers
 
             var entry = await _context.Entries
                 .Include(e => e.User)
+                .Include(e => e.Symptoms)
                 .FirstOrDefaultAsync(m => m.EntryId == id);
+            var symptomsToUse = _context.EntrySymptoms.Include(es => es.Symptom).Where(es => es.EntryId == entry.EntryId).ToList();
+            entry.Symptoms = symptomsToUse;
             if (entry == null)
             {
                 return NotFound();
