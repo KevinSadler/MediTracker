@@ -95,7 +95,6 @@ namespace MediTracker.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", entry.UserId);
             return View(entry);
         }
 
@@ -110,11 +109,15 @@ namespace MediTracker.Controllers
             {
                 return NotFound();
             }
-
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+                    entry.User = user;
+                    entry.UserId = user.Id;
                     _context.Update(entry);
                     await _context.SaveChangesAsync();
                 }
@@ -131,7 +134,6 @@ namespace MediTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", entry.UserId);
             return View(entry);
         }
 
