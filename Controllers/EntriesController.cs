@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using MediTracker.Data;
 using MediTracker.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MediTracker.Controllers
 {
+    [Authorize]
     public class EntriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,7 +28,7 @@ namespace MediTracker.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var entries = await _context.Entries.Include(e => e.User).Where(e => e.UserId == user.Id).ToListAsync();
+            var entries = await _context.Entries.Include(e => e.User).Where(e => e.UserId == user.Id).OrderByDescending(e => e.Date).ToListAsync();
             foreach (var e in entries) {
                var numSymptoms =  _context.EntrySymptoms.Select(es => es.EntryId).Where(id => id == e.EntryId).Count();
                 var symptomsToUse = _context.EntrySymptoms.Include(es => es.Symptom).Where(es => es.EntryId == e.EntryId).ToList();
@@ -61,7 +63,6 @@ namespace MediTracker.Controllers
         // GET: Entries/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View();
         }
 
@@ -72,8 +73,13 @@ namespace MediTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EntryId,Date,Notes,UserId")] Entry entry)
         {
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                entry.User = user;
+                entry.UserId = user.Id;
                 _context.Add(entry);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
