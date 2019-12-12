@@ -28,13 +28,13 @@ namespace MediTracker.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var entries = await _context.Entries.Include(e => e.User).Where(e => e.UserId == user.Id).OrderByDescending(e => e.Date).ToListAsync();
-            foreach (var e in entries) {
-               var numSymptoms =  _context.EntrySymptoms.Select(es => es.EntryId).Where(id => id == e.EntryId).Count();
-                var symptomsToUse = _context.EntrySymptoms.Include(es => es.Symptom).Where(es => es.EntryId == e.EntryId).ToList();
-                e.NumOfSymptoms = numSymptoms;
-                e.Symptoms = symptomsToUse;
-            }
+            var entries = await _context.Entries.Include(e => e.Symptoms).Include(e => e.User).Where(e => e.UserId == user.Id).OrderByDescending(e => e.Date).ToListAsync();
+            //foreach (var e in entries) {
+               //var numSymptoms =  _context.EntrySymptoms.Select(es => es.EntryId).Where(id => id == e.EntryId).Count();
+                //var symptomsToUse = _context.EntrySymptoms.Include(es => es.Symptom).Where(es => es.EntryId == e.EntryId).ToList();
+                //e.NumOfSymptoms = numSymptoms;
+                //e.Symptoms = symptomsToUse;
+            //}
             return View(entries);
         }
 

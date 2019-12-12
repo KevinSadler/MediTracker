@@ -26,8 +26,12 @@ namespace MediTracker.Models
 
         public virtual ICollection<EntrySymptom> Symptoms { get; set; }
 
-        [NotMapped]
-        public int NumOfSymptoms { get; set; }
+        public int NumOfSymptoms {
+            get
+            {
+                return Symptoms.Count();
+            }
+        }
 
         [NotMapped]
         public string dateString { get  
