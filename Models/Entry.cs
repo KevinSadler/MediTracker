@@ -24,10 +24,19 @@ namespace MediTracker.Models
         [Required]
         public ApplicationUser User { get; set; }
 
-        public virtual ICollection<EntrySymptom> Symptoms { get; set; }
-
+        public virtual ICollection<EntrySymptom> EntrySymptoms { get; set; }
+        
         [NotMapped]
-        public int NumOfSymptoms { get; set; }
+        public int NumOfSymptoms {
+            get
+            {
+                if (EntrySymptoms != null)
+                {
+                    return EntrySymptoms.Count();
+                }
+                else return 0;
+            }
+        }
 
         [NotMapped]
         public string dateString { get  

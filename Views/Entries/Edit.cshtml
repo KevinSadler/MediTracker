@@ -1,4 +1,4 @@
-﻿@model MediTracker.Models.Entry
+﻿@model MediTracker.Models.ViewModels.EntryEditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,16 +12,28 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="EntryId" />
+            <input type="hidden" asp-for="Entry.EntryId" />
             <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
+                <label asp-for="Entry.Date" class="control-label"></label>
+                <input asp-for="Entry.Date" class="form-control" />
+                <span asp-validation-for="Entry.Date" class="text-danger"></span>
+            </div>
+            <div class="form-horizontal">
+                @*@Html.HiddenFor(Model.Symptoms.SymptomId)*@
+                @*<div class="form-group" id="multiSelectBox">
+                    <label asp-for="SelectedSymptomIds" class="control-label"></label>
+                    <select multiple asp-for="SelectedSymptomIds" asp-items="@Model.SymptomOptions"></select>
+                    <span asp-validation-for="SelectedSymptomIds" class="text-danger"></span>
+                </div>*@
+                <div class="form-group">
+                    <label>Select Symptoms</label>
+                    @Html.ListBoxFor(Model => Model.SelectedSymptomIds, new MultiSelectList(Model.AllSymptoms, "SymptomId", "Title"), new {id = "multiSelectBox", multiple="multiple"  } )
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
+                <label asp-for="Entry.Notes" class="control-label"></label>
+                <input asp-for="Entry.Notes" class="form-control" />
+                <span asp-validation-for="Entry.Notes" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -31,9 +43,15 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Details" asp-route-id="@Model.Entry.EntryId">Back</a>
 </div>
 
 @section Scripts {
+    <script src="C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\Chosen\chosen.jquery.js"></script>
+    <script>
+    $(function () {
+        $("#multiSelectBox").chosen();
+    });
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

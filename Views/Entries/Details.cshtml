@@ -14,31 +14,33 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.dateString)
         </dd>
-        @if (Model.Notes != null)
+        @if (Model.EntrySymptoms.Count > 0)
         {
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-        }
-        @if (Model.Symptoms.Count > 0)
-        {
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Symptoms)
-        </dt>
-        <ul>
-        @foreach (var s in Model.Symptoms)
-        {
-    <li>
-        @s.Symptom.Title
-    </li>        }
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EntrySymptoms)
+            </dt>
+            <ul class="col-sm-10">
+                @foreach (var s in Model.EntrySymptoms)
+                {
+                    <li>
+                        @s.Symptom.Title
+                    </li>
+                }
             </ul>
         }
+    
+        @if (Model.Notes != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Notes)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+        }
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.EntryId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.EntryId">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
