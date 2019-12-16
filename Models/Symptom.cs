@@ -18,7 +18,7 @@ namespace MediTracker.Models
         public string UserId { get; set; }
 
         [Required]
-        public ApplicationUser user { get; set; }
+        public ApplicationUser User { get; set; }
 
     }
 }

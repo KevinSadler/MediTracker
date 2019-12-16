@@ -160,3 +160,8 @@ C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netco
 C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\MediTracker.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\MediTracker.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\MediTracker.csprojAssemblyReference.cache
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Symptoms\Create.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Symptoms\Delete.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Symptoms\Details.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Symptoms\Edit.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Symptoms\Index.cshtml.g.cs

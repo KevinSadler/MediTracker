@@ -29,6 +29,9 @@
                     @Html.ListBoxFor(Model => Model.SelectedSymptomIds, new MultiSelectList(Model.AllSymptoms, "SymptomId", "Title"), new { id = "multiSelectBox", multiple = "multiple" })
                 </div>
             </div>
+            <div>
+                <a asp-controller="Symptoms" asp-action="Create">Create A New Symptom</a>
+            </div>
             <div class="form-group">
                 <label asp-for="Entry.Notes" class="control-label"></label>
                 <input asp-for="Entry.Notes" class="form-control" />
