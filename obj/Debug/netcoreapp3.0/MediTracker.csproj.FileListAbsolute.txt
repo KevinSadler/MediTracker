@@ -165,3 +165,9 @@ C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netco
 C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Symptoms\Details.cshtml.g.cs
 C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Symptoms\Edit.cshtml.g.cs
 C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Symptoms\Index.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Appointments\Create.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Appointments\Delete.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Appointments\Details.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Appointments\Edit.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Appointments\Index.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Appointments\PreviousAppointments.cshtml.g.cs

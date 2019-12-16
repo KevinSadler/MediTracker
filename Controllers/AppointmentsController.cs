@@ -11,26 +11,36 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MediTracker.Controllers
 {
-    public class SymptomsController : Controller
+    public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public SymptomsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AppointmentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: Symptoms
+        // GET: Appointments
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var applicationDbContext = _context.Symptoms.Where(s => s.UserId == user.Id);
-            return View(await applicationDbContext.ToListAsync());
+            var appointments = _context.Appointments.Where(a => a.UserId == user.Id && a.Date >= DateTime.Now).OrderBy(a => a.Date);
+            return View(await appointments.ToListAsync());
         }
 
-        // GET: Symptoms/Details/5
+        // Get: Previous Appointments
+        public async Task<IActionResult> PreviousAppointments()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var previousAppointments = _context.Appointments.Where(a => a.UserId == user.Id && a.Date < DateTime.Now).OrderByDescending(a => a.Date);
+            
+            return View(await previousAppointments.ToListAsync());
+        }
+
+
+        // GET: Appointments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,45 +48,46 @@ namespace MediTracker.Controllers
                 return NotFound();
             }
 
-            var symptom = await _context.Symptoms
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.SymptomId == id);
-            if (symptom == null)
+            var appointment = await _context.Appointments
+                .Include(a => a.User)
+                .Include(a => a.Notes)
+                .FirstOrDefaultAsync(m => m.AppointmentId == id);
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            return View(symptom);
+            return View(appointment);
         }
 
-        // GET: Symptoms/Create
+        // GET: Appointments/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Symptoms/Create
+        // POST: Appointments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SymptomId,Title,UserId")] Symptom symptom)
+        public async Task<IActionResult> Create([Bind("AppointmentId,Date,Location,ReasonForVisit,UserId")] Appointment appointment)
         {
             ModelState.Remove("User");
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(HttpContext.User);
-                symptom.User = user;
-                symptom.UserId = user.Id;
-                _context.Add(symptom);
+                appointment.User = user;
+                appointment.UserId = user.Id;
+                _context.Add(appointment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(symptom);
+            return View(appointment);
         }
 
-        // GET: Symptoms/Edit/5
+        // GET: Appointments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,23 +95,22 @@ namespace MediTracker.Controllers
                 return NotFound();
             }
 
-            var symptom = await _context.Symptoms.FindAsync(id);
-            if (symptom == null)
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", symptom.UserId);
-            return View(symptom);
+            return View(appointment);
         }
 
-        // POST: Symptoms/Edit/5
+        // POST: Appointments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SymptomId,Title,UserId")] Symptom symptom)
+        public async Task<IActionResult> Edit(int id, [Bind("AppointmentId,Date,Location,ReasonForVisit,UserId")] Appointment appointment)
         {
-            if (id != symptom.SymptomId)
+            if (id != appointment.AppointmentId)
             {
                 return NotFound();
             }
@@ -111,14 +121,14 @@ namespace MediTracker.Controllers
                 try
                 {
                     var user = await _userManager.GetUserAsync(HttpContext.User);
-                    symptom.User = user;
-                    symptom.UserId = user.Id;
-                    _context.Update(symptom);
+                    appointment.User = user;
+                    appointment.UserId = user.Id;
+                    _context.Update(appointment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SymptomExists(symptom.SymptomId))
+                    if (!AppointmentExists(appointment.AppointmentId))
                     {
                         return NotFound();
                     }
@@ -129,11 +139,10 @@ namespace MediTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", symptom.UserId);
-            return View(symptom);
+            return View(appointment);
         }
 
-        // GET: Symptoms/Delete/5
+        // GET: Appointments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -141,35 +150,35 @@ namespace MediTracker.Controllers
                 return NotFound();
             }
 
-            var symptom = await _context.Symptoms
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.SymptomId == id);
-            if (symptom == null)
+            var appointment = await _context.Appointments
+                .Include(a => a.User)
+                .FirstOrDefaultAsync(m => m.AppointmentId == id);
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            return View(symptom);
+            return View(appointment);
         }
 
-        // POST: Symptoms/Delete/5
+        // POST: Appointments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var EntrySymptomsToDelete = await _context.EntrySymptoms.Where(es => es.SymptomId == id).ToListAsync();
-            foreach (var es in EntrySymptomsToDelete) {
-                _context.EntrySymptoms.Remove(es);
+            var notesToDelete = await _context.Notes.Where(n => n.AppointmentId == id).ToListAsync();
+            foreach (var n in notesToDelete) {
+                _context.Notes.Remove(n);
             }
-            var symptom = await _context.Symptoms.FindAsync(id);
-            _context.Symptoms.Remove(symptom);
+            var appointment = await _context.Appointments.FindAsync(id);
+            _context.Appointments.Remove(appointment);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SymptomExists(int id)
+        private bool AppointmentExists(int id)
         {
-            return _context.Symptoms.Any(e => e.SymptomId == id);
+            return _context.Appointments.Any(e => e.AppointmentId == id);
         }
     }
 }
