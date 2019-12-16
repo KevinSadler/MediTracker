@@ -63,7 +63,7 @@ namespace MediTracker
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Entries}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
