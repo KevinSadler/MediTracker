@@ -63,9 +63,14 @@ namespace MediTracker.Controllers
         }
 
         // GET: Entries/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var viewModel = new EntryCreateViewModel()
+            {
+                AllSymptoms = await _context.Symptoms.Where(s => s.UserId == user.Id).ToListAsync()
+            };
+            return View(viewModel);
         }
 
         // POST: Entries/Create
@@ -73,21 +78,32 @@ namespace MediTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EntryId,Date,Notes,UserId")] Entry entry)
+        public async Task<IActionResult> Create(EntryCreateViewModel viewModel)
         {
-            ModelState.Remove("User");
-            ModelState.Remove("UserId");
+            ModelState.Remove("Entry.User");
+            ModelState.Remove("Entry.UserId");
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(HttpContext.User);
-                entry.User = user;
-                entry.UserId = user.Id;
-                _context.Add(entry);
+                var idsToUse = viewModel.SelectedSymptomIds.ToList();
+                viewModel.Entry.User = user;
+                viewModel.Entry.UserId = user.Id;
+                var newEntry = viewModel.Entry;
+                _context.Add(newEntry);
+                _context.SaveChanges();
+                var newId = newEntry.EntryId;
+                foreach (var s in idsToUse) {
+                    EntrySymptom newES = new EntrySymptom()
+                    {
+                        EntryId = newId,
+                        SymptomId = s
+                    };
+                    _context.EntrySymptoms.Add(newES);
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", entry.UserId);
-            return View(entry);
+            return View(viewModel);
         }
 
         // GET: Entries/Edit/5
@@ -184,8 +200,8 @@ namespace MediTracker.Controllers
             }
 
             var entry = await _context.Entries
-                .Include(e => e.User)
                 .Include(e => e.EntrySymptoms)
+                .ThenInclude(es => es.Symptom)
                 .FirstOrDefaultAsync(e => e.EntryId == id);
             //var symptomsToUse = _context.EntrySymptoms.Include(es => es.Symptom).Where(es => es.EntryId == entry.EntryId).ToList();
             //entry.Symptoms = symptomsToUse;
