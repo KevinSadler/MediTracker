@@ -28,8 +28,16 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ReasonForVisit)
         </dd>
-        @if (Model.Notes.Count > 0)
-        {
+    </dl>
+
+    <form asp-controller="Notes" asp-action="Create">
+        <input type="hidden" asp-for="AppointmentId">
+        <button type="submit">Add Note</button>
+    </form>
+
+    @if (Model.Notes.Count > 0)
+    {
+        <dl>
             <dt class="col-sm-2">
                 Appointment Notes:
             </dt>
@@ -37,12 +45,12 @@
             {
                 <dd class="col-sm-10">
                     @n.Content
-                    <a asp-action="Edit" asp-route-id="@n.AppointmentId">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@n.AppointmentId">Delete</a>
+                    <a asp-controller="Notes" asp-action="Edit" asp-route-id="@n.NoteId">Edit</a>
+                    <a asp-controller="Notes" asp-action="Delete" asp-route-id="@n.NoteId">Delete</a>
                 </dd>
             }
-        }
-    </dl>
+        </dl>
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.AppointmentId">Edit</a> |
