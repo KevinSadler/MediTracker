@@ -11,24 +11,26 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MediTracker.Controllers
 {
-    public class NotesController : Controller
+    public class MedicationsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public NotesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public MedicationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: Notes
+        // GET: Medications
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Notes.ToListAsync());
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var medications = await _context.Medications.Where(m => m.UserId == user.Id).OrderBy(m => m.Name).ToListAsync();
+            return View(medications);
         }
 
-        // GET: Notes/Details/5
+        // GET: Medications/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,46 +38,42 @@ namespace MediTracker.Controllers
                 return NotFound();
             }
 
-            var note = await _context.Notes
-                .FirstOrDefaultAsync(m => m.NoteId == id);
-            if (note == null)
+            var medication = await _context.Medications
+                .FirstOrDefaultAsync(m => m.MedicationId == id);
+            if (medication == null)
             {
                 return NotFound();
             }
 
-            return View(note);
+            return View(medication);
         }
 
-        // GET: Notes/Create
-        public IActionResult Create(int appointmentId)
+        // GET: Medications/Create
+        public IActionResult Create()
         {
-            Note newNote = new Note()
-            {
-                AppointmentId = appointmentId
-            };
-            return View(newNote);
+            return View();
         }
 
-        // POST: Notes/Create
+        // POST: Medications/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NoteId,AppointmentId,Date,Content")] Note note)
+        public async Task<IActionResult> Create([Bind("MedicationId,Name,Description,Dosage,StartDate,UserId")] Medication medication)
         {
-            ModelState.Remove("User");
             ModelState.Remove("UserId");
-            var idToUSe = note.AppointmentId;
             if (ModelState.IsValid)
             {
-                _context.Add(note);
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                medication.UserId = user.Id;
+                _context.Add(medication);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), "Appointments", new { id = idToUSe});
+                return RedirectToAction(nameof(Index));
             }
-            return View(note);
+            return View(medication);
         }
 
-        // GET: Notes/Edit/5
+        // GET: Medications/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,36 +81,38 @@ namespace MediTracker.Controllers
                 return NotFound();
             }
 
-            var note = await _context.Notes.FindAsync(id);
-            if (note == null)
+            var medication = await _context.Medications.FindAsync(id);
+            if (medication == null)
             {
                 return NotFound();
             }
-            return View(note);
+            return View(medication);
         }
 
-        // POST: Notes/Edit/5
+        // POST: Medications/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NoteId,AppointmentId,Date,Content")] Note note)
+        public async Task<IActionResult> Edit(int id, [Bind("MedicationId,Name,Description,Dosage,StartDate,UserId")] Medication medication)
         {
-            if (id != note.NoteId)
+            if (id != medication.MedicationId)
             {
                 return NotFound();
             }
-            var idToUSe = note.AppointmentId;
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(note);
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+                    medication.UserId = user.Id;
+                    _context.Update(medication);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NoteExists(note.NoteId))
+                    if (!MedicationExists(medication.MedicationId))
                     {
                         return NotFound();
                     }
@@ -121,12 +121,12 @@ namespace MediTracker.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Details), "Appointments", new { id = idToUSe });
+                return RedirectToAction(nameof(Index));
             }
-            return View(note);
+            return View(medication);
         }
 
-        // GET: Notes/Delete/5
+        // GET: Medications/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,31 +134,30 @@ namespace MediTracker.Controllers
                 return NotFound();
             }
 
-            var note = await _context.Notes
-                .FirstOrDefaultAsync(m => m.NoteId == id);
-            if (note == null)
+            var medication = await _context.Medications
+                .FirstOrDefaultAsync(m => m.MedicationId == id);
+            if (medication == null)
             {
                 return NotFound();
             }
 
-            return View(note);
+            return View(medication);
         }
 
-        // POST: Notes/Delete/5
+        // POST: Medications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var note = await _context.Notes.FindAsync(id);
-            var idToUSe = note.AppointmentId;
-            _context.Notes.Remove(note);
+            var medication = await _context.Medications.FindAsync(id);
+            _context.Medications.Remove(medication);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), "Appointments", new { id = idToUSe });
+            return RedirectToAction(nameof(Index));
         }
 
-        private bool NoteExists(int id)
+        private bool MedicationExists(int id)
         {
-            return _context.Notes.Any(e => e.NoteId == id);
+            return _context.Medications.Any(e => e.MedicationId == id);
         }
     }
 }
