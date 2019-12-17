@@ -44,5 +44,8 @@ namespace MediTracker.Models
                 return Date.ToLongDateString();
             } 
         }
+
+        [NotMapped]
+        public List<Image> Images { get; set; }
     }
 }

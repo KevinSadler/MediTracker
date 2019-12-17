@@ -21,6 +21,7 @@ namespace MediTracker.Data
         public DbSet<Note> Notes { get; set; }
         public DbSet<Medication> Medications { get; set; }
         public DbSet<EntrySymptom> EntrySymptoms { get; set; }
+        public DbSet<Image> Images { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
