@@ -4,14 +4,16 @@ using MediTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MediTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191217195956_Thirdary")]
+    partial class Thirdary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace MediTracker.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "87fb7a2b-7fa4-4472-94e6-b4be58c44baf",
+                            ConcurrencyStamp = "ae2ba2fb-e0f9-4a20-bf2b-84441a507f65",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admina",
@@ -104,7 +106,7 @@ namespace MediTracker.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHtaiudVxhW6jGzB3qN9DlJYUxwpqamBoPKSe8aGLL+aJAvHcqF21A6szTojXc+MHw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBKHNHGOwiMmetVS5LFIprheREfHDC3dPuPygECTYJO0EAF0HD7r0X5qDUcVOBGYag==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,
@@ -114,7 +116,7 @@ namespace MediTracker.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-fffffffff123",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "88d8af64-5c38-45ac-8709-099783109d10",
+                            ConcurrencyStamp = "e495d17c-8393-4e50-94a0-d45060ec9698",
                             Email = "tony@montana.com",
                             EmailConfirmed = true,
                             FirstName = "Tony",
@@ -122,7 +124,7 @@ namespace MediTracker.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TONY@MONTANA.COM",
                             NormalizedUserName = "TONY@MONTANA.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDzg11/s5OMZDmZx/6p33Jaf0C/qDovjPnLnQ8HMlyze6UKMPsXhPAVwiBLkJuiWLw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBTcV2dlKtermQ5H/xb39AzCikCVqmXv85TsRjkeV5bXLjMs9285RAORqNLoLb63Hw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794123",
                             TwoFactorEnabled = false,
@@ -274,7 +276,10 @@ namespace MediTracker.Migrations
                     b.Property<int>("EntryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImgName")
+                    b.Property<string>("ImgPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ImageId");

@@ -4,32 +4,17 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+    <form asp-action="Create" enctype="multipart/form-data">
 
-<h4>Image</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Image.Title" class="control-label"></label>
-                <input asp-for="Image.Title" class="form-control" />
-                <span asp-validation-for="Image.Title" class="text-danger"></span>
-            </div>
-            <input asp-for="Image" />
-            <div class="form-group">
-                <input type="hidden" asp-for="Image.EntryId" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        <input type="hidden" asp-for="EntryId" />
+        <input asp-for="ImageFile" />
 
+        <div class="form-group">
+        <input type="submit" asp-page-handler="upload" />
+        </div>
+    </form>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Entries" asp-action="Details" asp-route-id="@Model.">Back to Entry</a>
 </div>
 
 @section Scripts {

@@ -9,41 +9,14 @@ using System.Threading.Tasks;
 
 namespace MediTracker.Models
 {
-    public class Image : IFormFile
+    public class Image
     {
         [Key]
         public int ImageId { get; set; }
-        public string Title { get; set; }
-        public string ImgPath { get; set; }
+        public string ImgName { get; set; }
 
         [Required]
         public int EntryId { get; set; }
-
-        public string ContentDisposition => throw new NotImplementedException();
-
-        public string ContentType => throw new NotImplementedException();
-
-        public string FileName => throw new NotImplementedException();
-
-        public IHeaderDictionary Headers => throw new NotImplementedException();
-
-        public long Length => throw new NotImplementedException();
-
-        public string Name => throw new NotImplementedException();
-
-        public void CopyTo(Stream target)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CopyToAsync(Stream target, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Stream OpenReadStream()
-        {
-            throw new NotImplementedException();
-        }
+        public Entry Entry { get; set; }
     }
 }

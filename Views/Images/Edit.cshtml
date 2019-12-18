@@ -14,18 +14,13 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ImageId" />
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImgPath" class="control-label"></label>
-                <input asp-for="ImgPath" class="form-control" />
-                <span asp-validation-for="ImgPath" class="text-danger"></span>
+                <label asp-for="ImgName" class="control-label"></label>
+                <input asp-for="ImgName" class="form-control" />
+                <span asp-validation-for="ImgName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EntryId" class="control-label"></label>
-                <input asp-for="EntryId" class="form-control" />
+                <select asp-for="EntryId" class="form-control" asp-items="ViewBag.EntryId"></select>
                 <span asp-validation-for="EntryId" class="text-danger"></span>
             </div>
             <div class="form-group">
