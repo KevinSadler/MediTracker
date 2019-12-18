@@ -1,0 +1,22 @@
+﻿@model MediTracker.Models.ViewModels.EntryImageVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+    <form asp-action="Create" enctype="multipart/form-data">
+
+        <input type="hidden" asp-for="EntryId" />
+        <input asp-for="ImageFile" />
+
+        <div class="form-group">
+        <input type="submit" asp-page-handler="upload" />
+        </div>
+    </form>
+<div>
+    <a asp-controller="Entries" asp-action="Details" asp-route-id="@Model.">Back to Entry</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

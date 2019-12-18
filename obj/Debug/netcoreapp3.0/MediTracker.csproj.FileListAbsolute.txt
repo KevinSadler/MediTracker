@@ -181,3 +181,8 @@ C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netco
 C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Medications\Details.cshtml.g.cs
 C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Medications\Edit.cshtml.g.cs
 C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Medications\Index.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Images\Create.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Images\Delete.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Images\Details.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Images\Edit.cshtml.g.cs
+C:\Users\sadle\workspace\csharp\projects\MediTracker\MediTracker\obj\Debug\netcoreapp3.0\Razor\Views\Images\Index.cshtml.g.cs
