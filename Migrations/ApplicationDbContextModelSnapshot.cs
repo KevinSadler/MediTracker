@@ -96,7 +96,7 @@ namespace MediTracker.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "add9573d-58ca-4350-a20a-02bd3c16d830",
+                            ConcurrencyStamp = "87fb7a2b-7fa4-4472-94e6-b4be58c44baf",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admina",
@@ -104,7 +104,7 @@ namespace MediTracker.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGSI4tjV0arnkjVNDvQOB6KL/m1+P3hUSVWyt0gTPAOpJlquDHhrYPmcahHmFbgSwQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHtaiudVxhW6jGzB3qN9DlJYUxwpqamBoPKSe8aGLL+aJAvHcqF21A6szTojXc+MHw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,
@@ -114,7 +114,7 @@ namespace MediTracker.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-fffffffff123",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ef9245ce-f1f5-423f-ae6e-b4ee799e944d",
+                            ConcurrencyStamp = "88d8af64-5c38-45ac-8709-099783109d10",
                             Email = "tony@montana.com",
                             EmailConfirmed = true,
                             FirstName = "Tony",
@@ -122,7 +122,7 @@ namespace MediTracker.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TONY@MONTANA.COM",
                             NormalizedUserName = "TONY@MONTANA.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBgbIEuQcYBmub9nSImIYAYcLYDodj/9cPQkyhnjHevJ3vlbV6uJ0fBTEovBbOKaUA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDzg11/s5OMZDmZx/6p33Jaf0C/qDovjPnLnQ8HMlyze6UKMPsXhPAVwiBLkJuiWLw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794123",
                             TwoFactorEnabled = false,
@@ -262,6 +262,26 @@ namespace MediTracker.Migrations
                             EntryId = 2,
                             SymptomId = 4
                         });
+                });
+
+            modelBuilder.Entity("MediTracker.Models.Image", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EntryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImgName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("EntryId");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("MediTracker.Models.Medication", b =>
@@ -567,6 +587,15 @@ namespace MediTracker.Migrations
                     b.HasOne("MediTracker.Models.Symptom", "Symptom")
                         .WithMany()
                         .HasForeignKey("SymptomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MediTracker.Models.Image", b =>
+                {
+                    b.HasOne("MediTracker.Models.Entry", "Entry")
+                        .WithMany()
+                        .HasForeignKey("EntryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

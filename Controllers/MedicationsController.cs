@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using MediTracker.Data;
 using MediTracker.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MediTracker.Controllers
 {
+    [Authorize]
     public class MedicationsController : Controller
     {
         private readonly ApplicationDbContext _context;

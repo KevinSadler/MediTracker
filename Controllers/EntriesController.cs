@@ -49,11 +49,14 @@ namespace MediTracker.Controllers
 
             var entry = await _context.Entries
                 .Include(e => e.User)
+                //.Include(e => e.Images)
                 .Include(e => e.EntrySymptoms)
                 .ThenInclude(e => e.Symptom)
                 .FirstOrDefaultAsync(m => m.EntryId == id);
             //var symptomsToUse = _context.EntrySymptoms.Include(es => es.Symptom).Where(es => es.EntryId == entry.EntryId).ToList();
             //entry.Symptoms = symptomsToUse;
+            var picsToUse = _context.Images.Where(i => i.EntryId == entry.EntryId).ToList();
+            entry.Images = picsToUse;
             if (entry == null)
             {
                 return NotFound();
@@ -219,6 +222,11 @@ namespace MediTracker.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var entry = await _context.Entries.FindAsync(id);
+            var symptomsToDelete = await _context.EntrySymptoms.Where(es => es.EntryId == entry.EntryId).ToListAsync();
+            foreach (var s in symptomsToDelete) 
+            {
+                _context.EntrySymptoms.Remove(s);
+            }
             _context.Entries.Remove(entry);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
