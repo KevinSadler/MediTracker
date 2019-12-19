@@ -49,15 +49,16 @@
         <button class="imgButton" type="submit">Add Image</button>
     </form>
     <div class="imgContainer">
-    @if (Model.Images.Count > 0)
-    {
-
-        foreach (var img in Model.Images)
+        @if (Model.Images.Count > 0)
         {
-            <img id="entryIMG" src="~/uploads/@img.ImgName" alt="MyImage">
-            <br>
+
+            foreach (var img in Model.Images)
+            {
+                <img id="entryIMG" src="~/uploads/@img.ImgName" alt="MyImage">
+                <a asp-controller="Images" asp-action="Delete" asp-route-id="@img.ImageId">Delete</a>
+                <br>
+            }
         }
-    }
     </div>
     <div>
         <a asp-action="Edit" asp-route-id="@Model.EntryId">Edit</a> |

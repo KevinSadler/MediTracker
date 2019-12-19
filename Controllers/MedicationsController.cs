@@ -105,6 +105,7 @@ namespace MediTracker.Controllers
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                var medicationID = medication.MedicationId;
                 try
                 {
                     var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -123,7 +124,7 @@ namespace MediTracker.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = medicationID});
             }
             return View(medication);
         }

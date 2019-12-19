@@ -179,10 +179,17 @@ namespace MediTracker.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var image = await _context.Images.FindAsync(id);
+            var fileName = image.ImgName;
+            var images = Directory.GetFiles("wwwroot/uploads");
+            var fileToDelete = images.FirstOrDefault(i => i.Contains(fileName));
             var idToUse = image.EntryId;
-            _context.Images.Remove(image);
+            if (fileToDelete != null)
+            {
+                System.IO.File.Delete(fileToDelete);
+            }
+                _context.Images.Remove(image);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), "Entries", new { id = idToUse});
+            return RedirectToAction(nameof(Details), "Entries", new { id = idToUse});
         }
 
         private bool ImageExists(int id)
