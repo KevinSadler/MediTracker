@@ -31,10 +31,10 @@ namespace MediTracker.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var entries = await _context.Entries.Include(e => e.EntrySymptoms).ThenInclude(e => e.Symptom).Where(e => e.UserId == user.Id).OrderByDescending(e => e.Date).ToListAsync();
             //foreach (var e in entries) {
-               //var numSymptoms =  _context.EntrySymptoms.Select(es => es.EntryId).Where(id => id == e.EntryId).Count();
-                //var symptomsToUse = _context.EntrySymptoms.Include(es => es.Symptom).Where(es => es.EntryId == e.EntryId).ToList();
-                //e.NumOfSymptoms = numSymptoms;
-                //e.Symptoms = symptomsToUse;
+            //var numSymptoms =  _context.EntrySymptoms.Select(es => es.EntryId).Where(id => id == e.EntryId).Count();
+            //var symptomsToUse = _context.EntrySymptoms.Include(es => es.Symptom).Where(es => es.EntryId == e.EntryId).ToList();
+            //e.NumOfSymptoms = numSymptoms;
+            //e.Symptoms = symptomsToUse;
             //}
             return View(entries);
         }
@@ -95,7 +95,8 @@ namespace MediTracker.Controllers
                 _context.Add(newEntry);
                 _context.SaveChanges();
                 var newId = newEntry.EntryId;
-                foreach (var s in idsToUse) {
+                foreach (var s in idsToUse)
+                {
                     EntrySymptom newES = new EntrySymptom()
                     {
                         EntryId = newId,
@@ -149,6 +150,7 @@ namespace MediTracker.Controllers
             ModelState.Remove("Entry.UserId");
             if (ModelState.IsValid)
             {
+                var entryID = viewModel.Entry.EntryId;
                 try
                 {
                     var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -160,7 +162,7 @@ namespace MediTracker.Controllers
                     foreach (var s in symptomsToDelete)
                     {
                         _context.EntrySymptoms.Remove(s);
-                       await _context.SaveChangesAsync();
+                        await _context.SaveChangesAsync();
                     }
                     foreach (var s in symptomsToUse)
                     {
@@ -189,7 +191,7 @@ namespace MediTracker.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = entryID });
             }
             return View(viewModel.Entry);
         }
@@ -223,7 +225,7 @@ namespace MediTracker.Controllers
         {
             var entry = await _context.Entries.FindAsync(id);
             var symptomsToDelete = await _context.EntrySymptoms.Where(es => es.EntryId == entry.EntryId).ToListAsync();
-            foreach (var s in symptomsToDelete) 
+            foreach (var s in symptomsToDelete)
             {
                 _context.EntrySymptoms.Remove(s);
             }
