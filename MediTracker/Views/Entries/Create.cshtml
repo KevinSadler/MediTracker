@@ -25,29 +25,35 @@
                     <select multiple asp-for="SelectedSymptomIds" asp-items="@Model.SymptomOptions"></select>
                     <span asp-validation-for="SelectedSymptomIds" class="text-danger"></span>
                 </div>*@
-            <label>Select Symptoms:</label>
-            @foreach (var s in Model.AllSymptoms)
-            {
-                <div class="custom-checkbox custom-control">
-                    <input type="checkbox" class="custom-control-input symptom-checkbox" id="checkbox-@s.SymptomId" value="@s.SymptomId">
-                    <label class="custom-control-label" for="checkbox-@s.SymptomId">@s.Title</label>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Choose Symptoms
+                </button>
+                <div class="dropdown-menu keep-open" aria-labelledby="dropdownMenuButton">
+                    @foreach (var s in Model.AllSymptoms)
+                    {
+                        <div class="custom-checkbox custom-control dropdown-item">
+                            <input name="SelectedSymptomIds" type="checkbox" class="custom-control-input symptom-checkbox" id="checkbox-@s.SymptomId" value="@s.SymptomId">
+                            <label class="custom-control-label" for="checkbox-@s.SymptomId">@s.Title</label>
 
 
+                        </div>
+                    }
                 </div>
-            }
-            @*@Html.ListBoxFor(Model => Model.SelectedSymptomIds, new MultiSelectList(Model.AllSymptoms, "SymptomId", "Title"), new { id = "multiSelectBox", multiple = "multiple" })*@
-            <div>
-                <a asp-controller="Symptoms" asp-action="Create">Create A New Symptom</a>
-            </div>
-            <div class="form-group">
-                <label asp-for="Entry.Notes" class="control-label"></label>
-                <input asp-for="Entry.Notes" class="form-control" />
-                <span asp-validation-for="Entry.Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" id="createBTN" />
-            </div>
-        </form>
+                </div>
+                @*@Html.ListBoxFor(Model => Model.SelectedSymptomIds, new MultiSelectList(Model.AllSymptoms, "SymptomId", "Title"), new { id = "multiSelectBox", multiple = "multiple" })*@
+                <div>
+                    <a asp-controller="Symptoms" asp-action="Create">Create A New Symptom</a>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Entry.Notes" class="control-label"></label>
+                    <input asp-for="Entry.Notes" class="form-control" />
+                    <span asp-validation-for="Entry.Notes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" id="createBTN" />
+                </div>
+</form>
     </div>
 </div>
 
@@ -58,20 +64,9 @@
 @section Scripts {
 
     <script type="text/javascript">
-    $('.createBTN').click(function () {
-
-
-    @{List<int> idsToUse = new List<int>();}
-    const chkboxes = document.getElementsByClassName("symptom-checkbox")
-    chkboxes.foreach(cb => {
-        if (cb.isChecked) {
-            idsToUse.add(cb.value)
-        }
-    })
-
-    @{Model.SelectedSymptomIds = idsToUse;}
-
-    })
+        jQuery('.dropdown-menu.keep-open').on('click', function (e) {
+         e.stopPropagation();
+        });
     </script>
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
