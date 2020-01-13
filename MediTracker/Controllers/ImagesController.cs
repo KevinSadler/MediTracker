@@ -77,13 +77,17 @@ namespace MediTracker.Controllers
         public async Task<IActionResult> Create(EntryImageVM viewModel)
         {
             var idToUse = viewModel.EntryId;
-           
             if (viewModel.ImageFile != null)
             {
                 var uniqueFileName = GetUniqueFileName(viewModel.ImageFile.FileName);
                 var uploads = Path.Combine(hostingEnvironment.WebRootPath, "uploads");
                 var filePath = Path.Combine(uploads, uniqueFileName);
-                viewModel.ImageFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                {
+                    viewModel.ImageFile.CopyTo(fs);
+                    fs.Close();
+                }
+                
 
                 //to do : Save uniqueFileName  to your db table   
                 Image newImage = new Image()
@@ -181,15 +185,26 @@ namespace MediTracker.Controllers
             var image = await _context.Images.FindAsync(id);
             var fileName = image.ImgName;
             var images = Directory.GetFiles("wwwroot/uploads");
-            var fileToDelete = images.FirstOrDefault(i => i.Contains(fileName));
-            var idToUse = image.EntryId;
+            var entId = image.EntryId;
+            string fileToDelete = null;
+                while (true) {
+                try
+                {
+                    fileToDelete = images.FirstOrDefault(i => i.Contains(fileName));
+                    break;
+                }
+                catch 
+                {
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
             if (fileToDelete != null)
             {
-                System.IO.File.Delete(fileToDelete);
+               await DeleteAsync(fileToDelete);
             }
-                _context.Images.Remove(image);
+             _context.Images.Remove(image);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), "Entries", new { id = idToUse});
+            return RedirectToAction(nameof(Details), "Entries", new { id = entId});
         }
 
         private bool ImageExists(int id)
@@ -205,6 +220,12 @@ namespace MediTracker.Controllers
                       + "_"
                       + Guid.NewGuid().ToString().Substring(0, 4)
                       + Path.GetExtension(fileName);
+        }
+
+        public static Task DeleteAsync(string path)
+        {
+
+             return Task.Run(() => { System.IO.File.Delete(path); });
         }
     }
 }

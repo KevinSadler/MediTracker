@@ -4,14 +4,24 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Upcoming Appointments</h1>
+<h4>Upcoming Appointments</h4>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
-<div class="previous-apps-button">
+</p>*@
+
+<form class="create-btn-form">
+    <input asp-controller="Appointments" asp-action="create" type="submit" value="Add Appointment" class="btn create-btn" style="background-color:blue; color:white" />
+</form>
+
+@*<div class="previous-apps-button">
     <a asp-action="PreviousAppointments">View Previous Appointments</a>
-</div>
+</div>*@
+
+<form class="create-btn-form">
+    <input asp-controller="Appointments" asp-action="PreviousAppointments" type="submit" value="View Previous Appointments" class="btn create-btn" style="background-color:dimgrey; color:white" />
+</form>
+
 <table class="table">
     <thead>
         <tr>
