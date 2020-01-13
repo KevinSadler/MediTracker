@@ -77,13 +77,17 @@ namespace MediTracker.Controllers
         public async Task<IActionResult> Create(EntryImageVM viewModel)
         {
             var idToUse = viewModel.EntryId;
-           
             if (viewModel.ImageFile != null)
             {
                 var uniqueFileName = GetUniqueFileName(viewModel.ImageFile.FileName);
                 var uploads = Path.Combine(hostingEnvironment.WebRootPath, "uploads");
                 var filePath = Path.Combine(uploads, uniqueFileName);
-                viewModel.ImageFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                {
+                    viewModel.ImageFile.CopyTo(fs);
+                    fs.Close();
+                }
+                
 
                 //to do : Save uniqueFileName  to your db table   
                 Image newImage = new Image()

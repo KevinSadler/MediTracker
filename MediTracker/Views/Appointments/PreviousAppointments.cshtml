@@ -6,12 +6,22 @@
 
 <h4>Previous Appointments</h4>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
-<div class="upcoming-apps-button">
+</p>*@
+
+<form class="create-btn-form">
+    <input asp-controller="Appointments" asp-action="Create" type="submit" value="Add Appointment" class="btn create-btn" style="background-color:blue; color:white" />
+</form>
+
+@*<div class="upcoming-apps-button">
     <a asp-action="Index">View Upcoming Appointments</a>
-</div>
+</div>*@
+
+<form class="create-btn-form">
+    <input asp-controller="Appointments" asp-action="Index" type="submit" value="View Upcoming Appointments" class="btn create-btn" style="background-color:dimgrey; color:white" />
+</form>
+
 <table class="table">
     <thead>
         <tr>

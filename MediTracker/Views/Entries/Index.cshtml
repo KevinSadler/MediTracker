@@ -1,15 +1,11 @@
 ﻿@model IEnumerable<MediTracker.Models.Entry>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link href="~/css/site.css" rel="stylesheet" />
-</head>
-<body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<form class="create-btn-form">
+    <input asp-controller="Entries" asp-action="create" type="submit" value="Add Entry" class="btn create-btn" style="background-color:blue; color:white" />
+</form>
+
 <table class="table">
 
 
@@ -31,5 +27,3 @@
         }
     </tbody>
 </table>
-    </body>
-</html>

@@ -3,12 +3,8 @@
 @{
     ViewData["Title"] = "Details";
 }
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link href="~/css/EntryDetails.css" rel="stylesheet" />
-</head>
-<body>
+
+<div class="entry-details">
     <div>
         <hr />
         <dl class="row">
@@ -44,9 +40,9 @@
             }
         </dl>
     </div>
-    <form asp-controller="Images" asp-action="Create">
+    <form>
         <input type="hidden" asp-for="EntryId">
-        <button class="imgButton" type="submit">Add Image</button>
+        <input asp-controller="Images" asp-action="Create" style="background-color: dimgrey; color: white;" class="imgButton" type="submit" value="Add Image">
     </form>
     <div class="imgContainer">
         @if (Model.Images.Count > 0)
@@ -55,7 +51,7 @@
             foreach (var img in Model.Images)
             {
                 <img id="entryIMG" src="~/uploads/@img.ImgName" alt="MyImage">
-                <a asp-controller="Images" asp-action="Delete" asp-route-id="@img.ImageId">Delete</a>
+                <a style="color:red;" asp-controller="Images" asp-action="Delete" asp-route-id="@img.ImageId">Delete</a>
                 <br>
             }
         }
@@ -64,5 +60,4 @@
         <a asp-action="Edit" asp-route-id="@Model.EntryId">Edit</a> |
         <a asp-action="Index">Back to List</a>
     </div>
-</body>
-</html>
+</div>
