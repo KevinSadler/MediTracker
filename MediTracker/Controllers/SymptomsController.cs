@@ -28,7 +28,7 @@ namespace MediTracker.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var applicationDbContext = _context.Symptoms.Where(s => s.UserId == user.Id);
+            var applicationDbContext = _context.Symptoms.Where(s => s.UserId == user.Id).OrderBy(s => s.Title);
             return View(await applicationDbContext.ToListAsync());
         }
 
